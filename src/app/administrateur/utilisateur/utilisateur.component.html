@@ -1,0 +1,91 @@
+<div class="w3-container w3-padding-24 cont">
+    <div class="navbar">
+        <div class="w3-container">
+            <div class="navbar-header">
+                <ul class="navbar-nav nav w3-padding">
+                    <li class="w3-margin-top"><button (click)="New()"
+                            class="w3-btn w3-margin-top w3-margin-right w3-round-large w3-card bg-gradient-success w3-text-white"><span
+                                class="fa fa-plus"></span> <span class="text"> Nouveau</span></button></li>
+                    <li class="w3-margin-top"><button (click)="Modify()"
+                            class="w3-btn bg-gradient-info w3-text-white w3-margin-top w3-margin-right w3-round-large w3-card "><span
+                                class="fa fa-pencil"></span> <span class="text"> Modifier</span> </button></li>
+                    <li class="w3-margin-top"><button (click)="DeleteUtilisateur()"
+                            class="w3-btn bg-gradient-danger w3-text-white w3-margin-top w3-margin-right w3-round-large w3-card"><span
+                                class="fa fa-trash"></span><span class="text"> Supprimer</span> </button></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Users list -->
+    <div class="w3-responsive w3-round-large w3-card-2">
+        <table class="w3-table w3-round-large">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Attribution</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr (click)="SelectU(u)" *ngFor="let u of Users | paginate:{itemsPerPage:20, currentPage:page, totalItems:Users.length}" [class.selected]="u == SelectedU">
+                    <td>{{u.username}}</td>
+                </tr>
+                <tr *ngIf="Users.length == 0">
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- pagination -->
+    <div class="navbar" >
+        <div *ngIf="Users.length > 20" class="w3-margin w3-right">
+            <pagination-controls (pageChange)="page = $event" previousLabel="Précedent" nextLabel="Suivant">
+            </pagination-controls>
+        </div>
+    </div>
+    <!-- box start -->
+    <div class="box w3-container w3-padding w3-animate-right" *ngIf="box">
+        <div class="navbar">
+            <div class="w3-right">
+                <button (click)="Close()" class="w3-btn w3-card w3-round-large w3-text-white bg-gradient-danger"><span
+                        class="fa fa-remove"> </span></button>
+            </div>
+        </div>
+        <form #u="ngForm">
+            <div class="form-group">
+                <label for="">Username</label>
+                <input type="text" class="w3-input w3-padding w3-round-large w3-card-2 w3-margin-bottom"
+                    placeholder="Nom d'utilisateur" id="Username" name="Username" [(ngModel)]="username" required
+                    [class.box-red]="Usern.touched && Usern.invalid" #Usern="ngModel">
+                <span *ngIf="Usern.touched && Usern.invalid" class="alert w3-text-red w3-margin-top">Nom d'utilisateur
+                    requis !</span>
+            </div>
+            <div *ngIf="modifp">
+                <div class="form-group">
+                    <label for="">Password</label>
+                    <input type="password" class="w3-input w3-padding w3-round-large w3-card-2 w3-margin-bottom"
+                        placeholder="Mot de passe" id="PassU" name="PassU" [(ngModel)]="password" required
+                        [class.box-red]="UserPass.touched && UserPass.invalid" #UserPass="ngModel">
+                    <span *ngIf="UserPass.touched && UserPass.invalid" class="alert w3-text-red w3-margin-top">Mot de
+                        passe requis !</span>
+                </div>
+                <div class="form-group">
+                    <label for="">Confirm password</label>
+                    <input type="password" class="w3-input w3-padding w3-round-large w3-card-2 w3-margin-bottom"
+                        placeholder="Confirmer mot de passe" id="ConfP" name="ConfP" [(ngModel)]="confp" required
+                        [class.box-red]="Confp.touched && Confp.invalid" #Confp="ngModel">
+                    <span *ngIf="Confp.touched && Confp.invalid" class="alert w3-text-red w3-margin-top">Confirmer mote
+                        de passe !</span>
+                </div>
+            </div>
+            <div *ngIf="!modifp" class="w3-margin">
+                <button type="button" class="w3-btn w3-round-large w3-card bg-gradient-info w3-text-white" (click)="Modifp()">Modifier mot de passe</button>
+            </div>
+            <div class="w3-margin-top w3-center">
+                <button type="submit" [disabled]="u.invalid || confp != password || onsend"
+                    class="w3-btn bg-gradient-primary w3-text-white w3-round-large w3-card" type="submit"
+                    (click)="Save()">Enregistrer</button>
+            </div>
+        </form>
+    </div>
+</div>

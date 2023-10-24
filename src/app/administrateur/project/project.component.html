@@ -1,0 +1,147 @@
+<div class="navbar">
+    <div class="w3-left">
+        <h4>Projects</h4>
+    </div>
+    <div class="w3-right">
+        <input type="text" id="SearchP" name="SearchP" [(ngModel)]="search" class="w3-input w3-round-large w3-card-2 "
+            placeholder="Search">
+    </div>
+</div>
+<div class="list">
+    <div class="w3-center" *ngIf="Projects.length == 0">
+        <h3 style="opacity: 75%; color: white"><span class="fa fa-folder w3-text-yellow"></span> Empty</h3>
+    </div>
+    <div @fade class="w3-card-2 w3-round-large project-card card" *ngFor="let p of Projects | filter:search">
+        <div class="project-header navbar">
+            <div class="w3-left">
+                <h5 class="w3-margin-left">{{p.title}}</h5>
+            </div>
+            <div class="w3-right icon-list">
+                <div class="navbar-nav nav">
+                    <li><button class="w3-btn w3-text-green" (click)="taskModal = true; SelectedP = p"><span
+                                class="fa fa-plus"></span></button></li>
+                    <li><button (click)="UpdateP(p)" class="w3-btn w3-text-blue"><span
+                                class="fa fa-pencil"></span></button></li>
+                    <li><button class="w3-btn w3-text-red" (click)="DeleteProject(p)"><span
+                                class="fa fa-trash"></span></button></li>
+                </div>
+            </div>
+        </div>
+        <div @fade class="w3-card w3-round-large task-card w3-margin task-list" *ngFor="let t of p.idtask; index as i">
+            <div class="task-header w3-margin">
+                <div class="w3-left task-date">
+                    <div class="w3-margin-right w3-margin-top" *ngIf="t.datef">{{t.datef | date : 'dd-MM-YYYY'}}</div>
+                </div>
+                <div class="w3-right">
+                    <div class="icon-list">
+                        <div class="navbar-nav nav">
+                            <li><button [class.show]="t.isdone" (click)="SetTaskDone(t, p)" class="w3-btn w3-text-green">
+                                    <span class="fa fa-check"></span>
+                                </button></li>
+                            <li><button (click)="UpdateT(t,p)" class="w3-btn w3-text-blue"><span
+                                        class="fa fa-pencil"></span></button></li>
+                            <li><button (click)="DeleteTask(t,i, p)" class="w3-btn w3-text-red"><span
+                                        class="fa fa-trash"></span></button></li>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="task-header" *ngIf="t.isdone">
+                <div class="w3-right ">
+                    <h6 class="w3-text-green task-date w3-margin-right">Finished</h6>
+                </div>
+            </div>
+            <div class="w3-margin-top w3-padding">
+                <p>{{t.tasks}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Project box -->
+<div class="w3-animate-top modal-box modal-lg" *ngIf="projectModal == true">
+    <div class="modal-contents w3-container w3-padding">
+        <div class="navbar">
+            <div class="w3-left">
+                <h4 class="title">{{projectName}}</h4>
+            </div>
+            <div class="w3-right">
+                <button type="button" (click)="projectModal= false; Reset();" [class.disabled]="onsend"
+                    class="w3-btn w3-text-white bg-gradient-danger w3-round-large"><span
+                        class="fa fa-remove"></span></button>
+            </div>
+        </div>
+        <form #P="ngForm">
+            <div class="form-group">
+                <label for="">Title</label>
+                <input type="text" #TitleP="ngModel" [class.w3-border-red]="TitleP.invalid && TitleP.touched"
+                    id="ProjectName" name="ProjectName" [(ngModel)]="projectName" class="w3-input w3-round-large"
+                    placeholder="Title" required>
+            </div>
+            <div class="form-group">
+                <label for="">Description</label>
+                <textarea name="Projec tDesc" class="w3-input full-width w3-round-large" id="ProjectDesc"
+                    [(ngModel)]="description" cols="30" rows="10"></textarea>
+            </div>
+            <div class="form-group check">
+                <label for="">Automatisation</label>
+                <input type="checkbox" class="w3-input w3-margin-left" id="repeatsP" name="repeatsP"
+                    [(ngModel)]="repeats">
+            </div>
+
+            <div class="full-width">
+                <div class="w3-right">
+                    <button type="submit" (click)="SaveProject()" [class.disabled]="P.invalid || onsend"
+                        class="w3-btn w3-text-white bg-gradient-success w3-round-large"><span class="fa fa-save"></span>
+                        Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- task modal box -->
+<div class="w3-animate-top modal-box modal-sm" *ngIf="taskModal == true">
+    <div class="modal-contents w3-container w3-padding">
+        <div class="navbar">
+            <div class="w3-left">
+                <h4 class="title">{{projectName}}</h4>
+            </div>
+            <div class="w3-right">
+                <button type="button" (click)="taskModal= false; 
+                ResetTask();" [class.disbabled]="onsend"
+                    class="w3-btn w3-text-white bg-gradient-danger w3-round-large"><span
+                        class="fa fa-remove"></span></button>
+            </div>
+        </div>
+        <form #T="ngForm">
+            <div class="form-group">
+                <label for="">Task</label>
+                <input type="text" class="w3-input w3-round-large w3-padding" id="TaskD" name="TaskD" [(ngModel)]="task"
+                    required #TaskD="ngModel" [class.w3-border-red]="TaskD.invalid && TaskD.touched">
+            </div>
+            <div class="form-group">
+                <label for="">End</label>
+                <input type="date" class="w3-input w3-round-large w3-padding" id="TaskEnd" name="TaskEnd"
+                    [(ngModel)]="dateF">
+            </div>
+            <div class="form-group">
+                <label for="">Start</label>
+                <input type="date" class="w3-input w3-round-large w3-padding" id="TaskStart" name="TaskStart"
+                    [(ngModel)]="dateS">
+            </div>
+
+            <div class="full-width">
+                <div class="w3-right">
+                    <button type="submit" (click)="SaveTask()" [class.disabled]="T.invalid || onsend"
+                        class="w3-btn bg-gradient-success w3-round-large w3-text-white"><span class="fa fa-save"></span>
+                        Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Add btn -->
+<div class="add-btn">
+    <button type="button" (click)="projectModal = true; Reset();" class="w3-circle bg-gradient-success w3-btn"><span
+            class="fa fa-plus w3-center"></span></button>
+</div>

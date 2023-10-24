@@ -1,0 +1,88 @@
+.list{
+    width: 100%;
+    height: 86vh;
+    overflow-x:auto;
+    overflow-y: hidden;
+    position:relative;
+    display:grid;
+    grid-auto-flow: column;
+    grid-auto-columns: auto;
+    overscroll-behavior-inline: contain;
+}
+.project-header{
+    position: relative;
+    display:block;
+}
+
+.project-card ::-webkit-scrollbar {
+    width: 8px;
+    height: 10px;
+  }
+  
+.project-card ::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255);
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3);
+  }
+  
+.project-card  ::-webkit-scrollbar-thumb {
+    background: #c2c2c2;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+  }
+  
+.project-card  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to left, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4));
+}
+
+.icon-list{
+    opacity: 0;
+}
+
+.icon-list .navbar-nav{
+    width: auto;
+    overflow-x: hidden;
+    margin-right:5px;
+}
+.project-card:hover .icon-list {
+    opacity: 1;
+    overflow: auto;
+}
+
+.task-header{
+    display: block;
+    position: relative;
+    height: 30px;
+}
+.task-header .icon-list .fa{
+    font-size: 10pt;
+}
+.task-header .w3-btn{
+    width: auto;
+}
+.task-header .w3-btn:hover{
+    box-shadow: none;
+}
+.task-date{
+    height: 15px;
+    font-size: 10pt;
+    position: relative;
+    color: grey;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}
+
+.show{
+    opacity: 1;
+}
+/* Add btn  */
+.add-btn{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin: 20px;
+}
+.add-btn button{
+    width: 60px;
+    height: 60px;
+    position: relative;
+}

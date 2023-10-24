@@ -1,0 +1,23 @@
+<div class="bg" [class.dark]="dark" [class.light]="!dark">
+    <div class="sidenav sidebar fermer" >
+        <div class="w3-text-orange title w3-container w3-padding nav">
+            <a routerLink="/Admin" class="brand">ToD00!!</a>
+            <button accesskey="b" id="Close" onclick="move()" class="w3-btn"><span
+                    class="fa fa-angles-left"></span></button>
+        </div>
+        <ul class="nav nav-links">
+            <li><a class="w3-btn w3-left-align" routerLink="Dashboard" routerLinkActive="active"><span
+                        class="fa fa-chart-pie w3-text-green"></span> <span class="text"> Dashboard</span></a></li>
+            <li><a class="w3-btn w3-left-align" routerLink="Project" routerLinkActive="active"><span
+                        class="fa fa-briefcase w3-text-brown"></span> <span class="text"> Project</span></a></li>
+            <li><a (click)="Logout()" class="w3-btn w3-left-align"><span class="fa fa-power-off w3-text-red"> </span>
+                    <span class="text"> Logout</span></a></li>
+        </ul>
+    </div>
+    <div id="contenu" class="content">
+        <ngx-loading-bar [includeSpinner]="false"></ngx-loading-bar>
+        <div class="w3-padding">
+            <router-outlet ></router-outlet>
+        </div>
+    </div>
+</div>

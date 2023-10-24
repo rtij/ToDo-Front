@@ -1,0 +1,20 @@
+.box{
+    width: 400px;
+    height: 100%;
+    background-color: #e9ecef8e;
+    backdrop-filter: saturate(200%) blur(5px);
+    box-shadow: 0 15px 20px rgba(0, 0, 0, 0.527);
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    overflow: auto;
+}
+input:checked, select:checked{
+    outline: 0.5px solid var(--bs-secondary);
+    outline-offset: none;
+}
+.cont{
+    overflow: auto;
+}

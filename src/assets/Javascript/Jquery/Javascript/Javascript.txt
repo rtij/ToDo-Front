@@ -1,0 +1,18 @@
+javascript
+Language orienté objet
+majoritairement client-side: un client demande la page sur son
+navigateur et  le navigateur au serveur.
+Le serveur effectue les opérations du côté serveur (des
+opérations en php)  et renvoie la
+page client ie des résultats en javascript
+
+I-Où écrire les codes javascript
+-dans head html
+-dans body
+-dans un fichier .js (en extention javascript)
+
+pour placer des codes javascript dans un fichier html
+on peut utiliser plusieurs fois la balise <script></script>
+Les codes s'executent dans l'ordre des cultures dans le code html
+Pour le troisième méthode on utilise
+<script src="nom du fichier"></script>
