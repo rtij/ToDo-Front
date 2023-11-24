@@ -1,54 +1,23 @@
 <div>
     <div class="row">
-        <div class="col-sm-4">
-            <div class="w3-padding w3-round-large w3-card-2 card">
-                <div class="navbar">
-                    <div class="w3-left">
-                        <h4><span class="fa fa-user"></span> Profil</h4>
-                    </div>
-                    <div class="w3-right">
-                        <button (click)="modal = true" class="w3-btn w3-text-white w3-circle bg-gradient-primary"
-                        ><span class="fa fa-pencil"></span></button>
-                    </div>
-                </div>
-                <h4>{{username}}</h4>
-            </div>
+        <div class="col-sm-4 col-xs-12">
+           <app-utilisateur></app-utilisateur>
         </div>
-        <div class="col-sm-8">
+        <div class="col-sm-8 col-xs-12">
             <div class="w3-padding w3-round-large">
 
             </div>
         </div>
     </div>
+    <div class="row">
+
+        <!-- Calendar -->
+        <app-calendar></app-calendar>
+        <!-- Project status -->
+        <div class="col-sm-8">
+
+        </div>
+    </div>
 </div>
 
 <!-- box -->
-
-<div class="modal-box modal-sm w3-animate-opacity" *ngIf="modal || !User && getdata == false">
-    <div class="modal-contents w3-container w3-padding-24">
-        <div class="navbar">
-            <div class="w3-right">
-                <button *ngIf="User" class="w3-btn w3-text-white bg-gradient-danger w3-round-large" type="button" (click)="modal = false"><span class="fa fa-remove"></span></button>
-            </div>
-        </div>
-        <form>
-            <div class="form-group">
-                <label for="">Username</label>
-                <input type="text" [(ngModel)]="username" required
-                    [class.w3-border-red]="UsernameD.touched && UsernameD.invalid" #UsernameD="ngModel"
-                    class="w3-round-large w3-input w3-padding" id="UsernameD" name="UsernameD" placeholder="Username">
-            </div>
-            <div class="form-group">
-                <label for="">Password</label>
-                <input type="text" id="PassD" [(ngModel)]="password" name="PassD"
-                    class="w3-round-large w3-input w3-padding" placeholder="Password"
-                    [class.w3-border-red]="PassD.touched && PassD.invalid" required #PassD="ngModel">
-            </div>
-            <!-- <div class="form-group"></div> -->
-            <div class="w3-center">
-                <button class="w3-btn w3-round-large w3-text-white bg-gradient-danger" type="submit"
-                    (click)="Save()">Submit</button>
-            </div>
-        </form>
-    </div>
-</div>

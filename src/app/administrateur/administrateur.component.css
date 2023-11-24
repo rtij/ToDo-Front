@@ -209,6 +209,20 @@
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(to left, rgba(59, 59, 59, 0.3), rgba(0, 0, 0, 0.4));
 }
+/*  */
+
+/* Add btn  */
+.params-btn{
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 20px;
+}
+.params-btn button{
+  width: 60px;
+  height: 60px;
+  position: relative;
+}
 
 
 /*  */

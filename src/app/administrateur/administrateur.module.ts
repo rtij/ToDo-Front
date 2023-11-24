@@ -18,6 +18,8 @@ import { UtilisateurComponent } from './utilisateur/utilisateur.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProjectComponent } from './project/project.component';
 import { TaskComponent } from './task/task.component';
+import { CalendarComponent } from '../component/calendar/calendar.component';
+import { ModalComponent } from '../component/modal/modal.component';
 
 
 @NgModule({
@@ -27,6 +29,8 @@ import { TaskComponent } from './task/task.component';
     DashboardComponent,
     ProjectComponent,
     TaskComponent,
+    CalendarComponent,
+    ModalComponent
   ],
   imports: [
     CommonModule,

@@ -7,11 +7,18 @@
             placeholder="Search">
     </div>
 </div>
-<div class="list">
+<div *ngIf="Projects.length > 5" class="full-width">
+    <div class="w3-margin w3-right">
+        <pagination-controls (pageChange)="page = $event" previousLabel="Prev" nextLabel="Next">
+        </pagination-controls>
+    </div>
+</div>
+<div class="list" [class.disabled]="onsend">
     <div class="w3-center" *ngIf="Projects.length == 0">
         <h3 style="opacity: 75%; color: white"><span class="fa fa-folder w3-text-yellow"></span> Empty</h3>
     </div>
-    <div @fade class="w3-card-2 w3-round-large project-card card" *ngFor="let p of Projects | filter:search">
+    <div @fade class="w3-card-2 w3-round-large project-card card"
+        *ngFor="let p of Projects | filter:search | paginate:{itemsPerPage:5, currentPage:page, totalItems:Projects.length}">
         <div class="project-header navbar">
             <div class="w3-left">
                 <h5 class="w3-margin-left">{{p.title}}</h5>
@@ -35,7 +42,8 @@
                 <div class="w3-right">
                     <div class="icon-list">
                         <div class="navbar-nav nav">
-                            <li><button [class.show]="t.isdone" (click)="SetTaskDone(t, p)" class="w3-btn w3-text-green">
+                            <li><button [class.show]="t.isdone" (click)="SetTaskDone(t, p)"
+                                    class="w3-btn w3-text-green">
                                     <span class="fa fa-check"></span>
                                 </button></li>
                             <li><button (click)="UpdateT(t,p)" class="w3-btn w3-text-blue"><span
@@ -108,7 +116,7 @@
             </div>
             <div class="w3-right">
                 <button type="button" (click)="taskModal= false; 
-                ResetTask();" [class.disbabled]="onsend"
+                ResetTask();" [class.disabled]="onsend"
                     class="w3-btn w3-text-white bg-gradient-danger w3-round-large"><span
                         class="fa fa-remove"></span></button>
             </div>

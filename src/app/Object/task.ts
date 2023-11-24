@@ -3,7 +3,9 @@ import { Project } from "./Project";
 export class Task{
 
     tasks:string;
+    
     idproject:Project;
+    
     isdone:boolean = false;
     datef?:Date;
     dates?:Date;

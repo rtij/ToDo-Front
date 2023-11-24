@@ -1,0 +1,14 @@
+<div class="w3-animate-top modal-box modal-sm">
+    <div class="modal-contents w3-container w3-padding">
+        <div class="navbar">
+            <div class="w3-left" *ngIf="title">
+                <h4 class="title">{{title}}</h4>
+            </div>
+            <div class="w3-right">
+                <button type="button" (click)="Close()"
+                    class="w3-btn w3-text-white bg-gradient-danger w3-round-large"><span
+                        class="fa fa-remove"></span></button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -25,6 +25,16 @@ export function GetResultTime(Date: Date, i: number = 11): Time {
     return final_result;
 }
 
+export function getLocalTime():Time{
+    const dateString = new Date().toString();
+    var result = "";
+    for(let i=16; i<24; i++ ){
+        result = result + dateString[i];
+    }
+    const time:any = result;
+    return time
+}
+
 // Timer values getter
 
 export function getTimeHours(Hours: Time, i = 0): number {

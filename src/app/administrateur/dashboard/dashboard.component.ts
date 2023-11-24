@@ -1,7 +1,13 @@
+import { Time } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { ToastrService } from 'ngx-toastr';
+import { ServerData } from 'src/app/Object/Data/DataManager';
+import { DataComponentsManager } from 'src/app/Object/Data/DataComponentsManager';
+import { Project } from 'src/app/Object/Project';
 import { User } from 'src/app/Object/Users';
+import { CrudService } from 'src/app/Services/crud.service';
 import { LoginService } from 'src/app/Services/login.service';
 import { ServiceService } from 'src/app/Services/service.service';
 
@@ -10,11 +16,10 @@ import { ServiceService } from 'src/app/Services/service.service';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent<T> implements OnInit, DataComponentsManager<T>{
 
 
-  constructor(private toastr: ToastrService, private l: LoadingBarService, private loginService: LoginService, private service: ServiceService) {
-
+  constructor(private toastr: ToastrService, private l: LoadingBarService, private loginService: LoginService, private service: ServiceService, private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -25,9 +30,11 @@ export class DashboardComponent implements OnInit {
   // state
   active: boolean = true;
   modal: boolean = false;
-  getdata:boolean = true;
+  getdata: boolean = true;
   // Data
+  data: ServerData[] = [];
   User!: User;
+  Projects: Project[] = [];
 
   // forms
   username: string = "";
@@ -35,66 +42,28 @@ export class DashboardComponent implements OnInit {
   confp: string = "";
 
 
-  Edit(){
+  Edit() {
     this.modal = true;
   }
 
-  Save(){
-    if(this.User){
-      this.newUser();
-    }else{
-    
-    }
+
+  // getData function
+  getData(){
+    const data:any = this.route.snapshot.data;
+    let entity = data.entity;
+    let index = 0;
+    // let d = this.crudService.Data.find((item)=>{return item.name == entity[index].type});
+    // if(d){
+
+    // }
   }
-
-  UpdateUser(){
-    this.User.username = this.username;
-    this.User.password = this.password;
-    this.loader.start();
-    this.service.UpdateUser(this.User).subscribe(
-      (res) => {
-        this.User = res;
-        this.username = this.User.username;
-        this.toastr.success("Registred successfully");
-        this.loader.complete();
-      },
-      (err) => {
-        this.loader.complete();
-        if (this.active) {
-          this.toastr.warning("Server error");
-        }
-      }
-    );
-  }
-
-  newUser() {
-    let u = new User(this.username, this.password);
-    this.loader.start();
-    this.service.newUser(u).subscribe(
-      (res) => {
-        this.User = res;
-        this.username = this.User.username;
-        this.toastr.success("Registred successfully");
-        this.loader.complete();
-      },
-      (err) => {
-        this.loader.complete();
-        if (this.active) {
-          this.toastr.warning("Server error");
-        }
-      }
-    );
-  }
-
-
-  // Get Data function start
 
   getUser() {
     let u = this.loginService.User;
     this.loader.start();
     if (u) {
       this.User = u;
-      this.username= u.username;
+      this.username = u.username;
       this.loader.complete();
       this.getdata = false;
     } else {
@@ -109,6 +78,29 @@ export class DashboardComponent implements OnInit {
           this.loader.complete();
           if (this.active) {
             this.getUser();
+            this.Error(err);
+          }
+        }
+      );
+    }
+  }
+
+  getProjectsList() {
+    let p = this.service.Projects;
+    this.loader.start();
+    if (p.length != 0) {
+      this.Projects = p;
+      this.loader.complete();
+    } else {
+      this.service.getProjectList(this.User).subscribe(
+        (res) => {
+          this.Projects = res;
+          this.loader.complete();
+        },
+        (err) => {
+          this.loader.complete();
+          if (this.active) {
+            this.getProjectsList();
             this.Error(err);
           }
         }

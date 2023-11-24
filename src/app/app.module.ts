@@ -18,6 +18,8 @@ import { TokenInterceptor } from './Services/token.interceptor';
 import { ErrorInterceptor } from './Services/error.interceptor';
 import { LoadingComponent } from './loading/loading.component';
 import { NgxPrintModule } from 'ngx-print';
+import { CalendarComponent } from './component/calendar/calendar.component';
+import { ModalComponent } from './component/modal/modal.component';
 registerLocaleData(localeFr);
 
 @NgModule({

@@ -22,32 +22,34 @@ export class LoginComponent implements OnInit{
   onsend: boolean = false;
 
   Login() {
-    if (this.username == "") {
-      this.toastr.warning("Username required");
-    }
-    if (this.password == "") {
-      this.toastr.warning("Password required");
-    }
-    if (this.username != "" && this.password != "") {
-      this.loader.start();
-      this.onsend = true;
-      this.LoginService.CheckUser(this.username).subscribe(
-        (res)=>{
-          if(res == "ok"){
-            this.LoginUser();
-          }else if(res == "error"){
+    if(!this.onsend){
+      if (this.username == "") {
+        this.toastr.warning("Username required");
+      }
+      if (this.password == "") {
+        this.toastr.warning("Password required");
+      }
+      if (this.username != "" && this.password != "") {
+        this.loader.start();
+        this.onsend = true;
+        this.LoginService.CheckUser(this.username).subscribe(
+          (res)=>{
+            if(res == "ok"){
+              this.LoginUser();
+            }else if(res == "error"){
+              this.loader.complete();
+              this.toastr.warning("Wrong username or password !");
+              this.onsend = false;
+            }
+          },
+          (err)=>{
             this.loader.complete();
-            this.toastr.warning("Wrong username or password !");
+            console.log(err.error);
+            this.toastr.warning("Nom d'utilisateur on mot de passe incorrect");
             this.onsend = false;
           }
-        },
-        (err)=>{
-          this.loader.complete();
-          console.log(err.error);
-          this.toastr.warning("Nom d'utilisateur on mot de passe incorrect");
-          this.onsend = false;
-        }
-      )
+        )
+      }
     }
   }
 

@@ -1,0 +1,30 @@
+<!-- Calendar part -->
+<div class="col-sm-4">
+    <div class="calendar w3-card-2 card">
+        <div class="calendar-header">
+            <div>
+                <button (click)="Prev()" class="w3-btn">
+                    <span class="fa fa-chevron-left"></span>
+                </button>
+            </div>
+            <div>
+               <h4><strong>{{monthname}} {{year}}</strong></h4> 
+            </div>
+            <div>
+                <button (click)="Next()" class="w3-btn">
+                    <span class="fa fa-chevron-right"></span>
+                </button>
+            </div>
+        </div>
+        <div class="calendar-week-days">
+            <div *ngFor="let d of days">
+                {{d}}
+            </div>
+        </div>
+        <div class="calendar-month-days">
+            <div [class.inactive]="i <= start || i> end" [class.active]="d == actualday && month == actualmonth" *ngFor="let d of weekDay; let i = index">
+                 {{d}}
+            </div>
+        </div>
+    </div>
+</div>

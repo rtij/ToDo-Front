@@ -12,7 +12,7 @@ import { ServiceService } from 'src/app/Services/service.service';
   selector: 'app-project',
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.css'],
-  animations:[fade]
+  animations: [fade]
 })
 export class ProjectComponent implements OnInit {
 
@@ -22,6 +22,7 @@ export class ProjectComponent implements OnInit {
   ngOnInit(): void {
     this.getUser();
   }
+  
   n: any = null;
   loader = this.l.useRef();
   // state
@@ -33,6 +34,7 @@ export class ProjectComponent implements OnInit {
   // Data
   User!: User;
   Projects: Project[] = [];
+  page: number = 1;
 
   // 
   SelectedP!: Project;
@@ -42,6 +44,7 @@ export class ProjectComponent implements OnInit {
   repeats: boolean = false;
 
   Reset() {
+    this.SelectedP = this.n;
     this.projectName = "";
     this.description = '';
     this.repeats = false;
@@ -63,8 +66,8 @@ export class ProjectComponent implements OnInit {
   }
 
   // Save data start
-  // Tas
-  UpdateT(t: Task, p:Project) {
+  // Task part
+  UpdateT(t: Task, p: Project) {
     this.SelectedP = p;
     this.SelectedT = t;
     this.task = t.tasks;
@@ -78,83 +81,37 @@ export class ProjectComponent implements OnInit {
   }
 
   SaveTask() {
-    if (this.SelectedT) {
-      this.UpdateTask();
+    if (!this.onsend) {
+      if (this.SelectedT) {
+        this.UpdateTask();
+      } else {
+        this.NewTask();
+      }
     } else {
-      this.NewTask();
+      this.toastr.warning("Please wait...");
     }
   }
 
   NewTask() {
-    if (!this.dateF) {
-      this.dateF = this.n;
-    }
-    if (!this.dateS) {
-      this.dateS = this.n;
-    }
-    let t = new Task(this.task, this.SelectedP, this.dateF, this.dateS);
-    this.loader.start();
-    this.onsend = true;
-    this.service.newTask(t).subscribe(
-      (res) => {
-        this.SelectedP.idtask.push(res);
-        this.loader.complete();
-        this.toastr.success("Task saved successfully");
-        this.taskModal = false;
-        this.onsend = false;
-        this.ResetTask();
-        this.FIlterTask();
-      },
-      (err) => {
-        this.loader.complete();
-        this.onsend = false;
-        if (this.active) {
-          this.Error(err);
-          this.toastr.warning("Server error");
-        }
+    if (!this.onsend) {
+      if (!this.dateF) {
+        this.dateF = this.n;
       }
-    );
-  }
-
-  UpdateTask() {
-    this.SelectedT.tasks = this.task;
-    this.SelectedT.dates = this.dateS;
-    this.SelectedT.datef = this.dateF;
-    this.loader.start();
-    this.onsend = true;
-    this.service.updateTask(this.SelectedT).subscribe(
-      (res) => {
-        this.onsend = false;
-        this.loader.complete();
-        this.SelectedT = res;
-        this.toastr.success("Task updated successfully");
-        this.ResetTask();
-        this.taskModal = false;
-        this.FIlterTask();
-      },
-      (err) => {
-        this.loader.complete();
-        this.onsend = false;
-        if (this.active) {
-          this.Error(err);
-          this.toastr.warning("Server error");
-        }
+      if (!this.dateS) {
+        this.dateS = this.n;
       }
-    );
-  }
-
-  DeleteTask(t: Task, i:number, p:Project) {
-    this.SelectedP = p;
-    if (confirm("Do you really want to delete this task ?")) {
+      let t = new Task(this.task, this.SelectedP, this.dateF, this.dateS);
       this.loader.start();
       this.onsend = true;
-      this.service.DeleteTask(t).subscribe(
+      this.service.newTask(t).subscribe(
         (res) => {
-          this.onsend = false;
+          this.SelectedP.idtask.push(res);
           this.loader.complete();
-          this.SelectedP.idtask.splice(i,1);
-          this.toastr.success("Task deleted successfully");
+          this.toastr.success("Task saved successfully");
+          this.taskModal = false;
+          this.onsend = false;
           this.ResetTask();
+          this.FIlterTask();
         },
         (err) => {
           this.loader.complete();
@@ -168,27 +125,85 @@ export class ProjectComponent implements OnInit {
     }
   }
 
-  SetTaskDone(t: Task, p: Project) {
-    this.SelectedP = p;
-    this.onsend = true;
-    this.loader.start();
-    t.isdone = !t.isdone;
-    this.service.SetTaskDone(t).subscribe(
-      (res) => {
-        this.toastr.success("Task state updated successfully");
-        this.loader.complete();
-        this.onsend = false;
-        this.FIlterTask();
-      },
-      (err) => {
-        this.loader.complete();
-        this.onsend = false;
-        if (this.active) {
-          this.Error(err);
-          this.toastr.warning("Server error");
+  UpdateTask() {
+    if (!this.onsend) {
+      this.SelectedT.tasks = this.task;
+      this.SelectedT.dates = this.dateS;
+      this.SelectedT.datef = this.dateF;
+      this.loader.start();
+      this.onsend = true;
+      this.service.updateTask(this.SelectedT).subscribe(
+        (res) => {
+          this.onsend = false;
+          this.loader.complete();
+          this.SelectedT = res;
+          this.toastr.success("Task updated successfully");
+          this.ResetTask();
+          this.taskModal = false;
+          this.FIlterTask();
+        },
+        (err) => {
+          this.loader.complete();
+          this.onsend = false;
+          if (this.active) {
+            this.Error(err);
+            this.toastr.warning("Server error");
+          }
         }
+      );
+    }
+  }
+
+  DeleteTask(t: Task, i: number, p: Project) {
+    if (!this.onsend) {
+      this.SelectedP = p;
+      if (confirm("Do you really want to delete this task ?")) {
+        this.loader.start();
+        this.onsend = true;
+        this.service.DeleteTask(t).subscribe(
+          (res) => {
+            this.onsend = false;
+            this.loader.complete();
+            this.SelectedP.idtask.splice(i, 1);
+            this.toastr.success("Task deleted successfully");
+            this.ResetTask();
+          },
+          (err) => {
+            this.loader.complete();
+            this.onsend = false;
+            if (this.active) {
+              this.Error(err);
+              this.toastr.warning("Server error");
+            }
+          }
+        );
       }
-    )
+    }
+  }
+
+  SetTaskDone(t: Task, p: Project) {
+    if (!this.onsend) {
+      this.SelectedP = p;
+      this.onsend = true;
+      this.loader.start();
+      t.isdone = !t.isdone;
+      this.service.SetTaskDone(t).subscribe(
+        (res) => {
+          this.toastr.success("Task state updated successfully");
+          this.loader.complete();
+          this.onsend = false;
+          this.FIlterTask();
+        },
+        (err) => {
+          this.loader.complete();
+          this.onsend = false;
+          if (this.active) {
+            this.Error(err);
+            this.toastr.warning("Server error");
+          }
+        }
+      );
+    }
   }
 
   // Project
@@ -201,68 +216,32 @@ export class ProjectComponent implements OnInit {
   }
 
   SaveProject() {
-    if (this.SelectedP) {
-      this.UpdateProject();
+    if (!this.onsend) {
+      if (this.SelectedP) {
+        this.UpdateProject();
+      } else {
+        this.NewProject();
+      }
     } else {
-      this.NewProject();
+      this.toastr.warning("Please wait....")
     }
   }
 
   UpdateProject() {
-    this.SelectedP.title = this.projectName;
-    this.SelectedP.description = this.description;
-    this.SelectedP.repeats = this.repeats;
-    this.loader.start();
-    this.onsend = true;
-    this.service.updateProject(this.SelectedP).subscribe(
-      (res) => {
-        this.onsend = false;
-        this.Projects = res;
-        this.projectModal = false;
-        this.loader.complete();
-        this.toastr.success("Updated successfuly");
-      },
-      (err) => {
-        this.loader.complete();
-        this.onsend = false;
-        if (this.active) {
-          this.Error(err);
-          this.toastr.warning("Server error");
-        }
-      }
-    );
-  }
-
-  NewProject() {
-    let p = new Project(this.projectName, this.description);
-    this.loader.start();
-    this.service.newProject(p).subscribe(
-      (res) => {
-        this.Reset();
-        this.projectModal = false;
-        this.loader.complete();
-        this.Projects = res;
-        this.toastr.success("Project saved");
-      },
-      (err) => {
-        this.loader.complete();
-        this.onsend = false;
-        if (this.active) {
-          this.Error(err);
-          this.toastr.warning("Server error");
-        }
-      }
-    );
-  }
-
-  DeleteProject(p: Project) {
-    if (confirm("Do your really want to delete this project ?")) {
+    if (!this.onsend) {
+      this.SelectedP.title = this.projectName;
+      this.SelectedP.description = this.description;
+      this.SelectedP.repeats = this.repeats;
       this.loader.start();
-      this.service.DeleteProject(p).subscribe(
+      this.onsend = true;
+      this.service.updateProject(this.SelectedP).subscribe(
         (res) => {
-          this.Projects = this.Projects.filter((item) => { return item.idproject != p.idproject });
+          this.onsend = false;
+          this.Projects = res;
+          this.projectModal = false;
           this.loader.complete();
-          this.toastr.success("Deleted successfully");
+          this.toastr.success("Updated successfuly");
+          this.Reset();
         },
         (err) => {
           this.loader.complete();
@@ -273,6 +252,54 @@ export class ProjectComponent implements OnInit {
           }
         }
       );
+    }
+  }
+
+  NewProject() {
+    if (!this.onsend) {
+      let p = new Project(this.projectName, this.description);
+      this.loader.start();
+      this.service.newProject(p).subscribe(
+        (res) => {
+          this.Reset();
+          this.projectModal = false;
+          this.loader.complete();
+          this.Projects = res;
+          this.toastr.success("Project saved");
+        },
+        (err) => {
+          this.loader.complete();
+          this.onsend = false;
+          if (this.active) {
+            this.Error(err);
+            this.toastr.warning("Server error");
+          }
+        }
+      );
+    }
+  }
+
+  DeleteProject(p: Project) {
+    if (!this.onsend) {
+      if (confirm("Do your really want to delete this project ?")) {
+        this.loader.start();
+        this.service.DeleteProject(p).subscribe(
+          (res) => {
+            this.Projects = this.Projects.filter((item) => { return item.idproject != p.idproject });
+            this.loader.complete();
+            this.toastr.success("Deleted successfully");
+            this.Reset();
+          },
+          (err) => {
+            this.loader.complete();
+            this.onsend = false;
+            if (this.active) {
+              this.Error(err);
+              this.toastr.warning("Server error");
+            }
+          }
+        );
+      }
     }
   }
 

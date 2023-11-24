@@ -1,21 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { Time } from '@angular/common';
-import { getMonthDays, MonthListe } from 'src/app/Object/Date/Dates';
-import { getLocalTime } from 'src/app/Object/Time/Times';
+import { Component } from '@angular/core';
+import { getMonthDays } from 'src/app/Object/Date/Dates';
 
 @Component({
-  selector: 'app-task',
-  templateUrl: './task.component.html',
-  styleUrls: ['./task.component.css']
+  selector: 'app-calendar',
+  templateUrl: './calendar.component.html',
+  styleUrls: ['./calendar.component.css']
 })
-export class TaskComponent implements OnInit {
+export class CalendarComponent {
 
-  constructor() { }
-
-  ngOnInit(): void {
-    this.show();
-  }
-  dark:boolean = false;
+  
+  // Calendar variable
   days:string[] = ["Mon", "Tue", "Wed","Thu", "Fri", "Sat", "Sun"];
   monthL:string[] = ["January", "February", "March", "April", "May","June","July","August","September", "October", "November", "December"];
   year:number = new Date().getFullYear();
@@ -57,6 +51,4 @@ export class TaskComponent implements OnInit {
     // alert(new Date(this.year, this.month, 1));
     console.log(new Date(this.year, this.month, 32).getDay());
   }
-
-
 }

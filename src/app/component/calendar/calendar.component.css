@@ -1,14 +1,6 @@
-.bg{
-    width: 100vw;
-    height: 100vh;
-    background-color: var(--bs-gray-200);
-    display: grid;
-}
-.dark{
-    background-color: var(--bs-gray-800);
-}
+/* Calendar style */
 .calendar{
-    width: max-content;
+    width: 100%;
     height: max-content;
     display: block;
     margin: auto;
@@ -36,8 +28,8 @@
 .calendar-week-days div{
     display: grid;
     place-items: center;
-    margin: 0 20px;
-    padding: 10px;
+    margin: 0 5px;
+    padding: 5px;
 }
 .calendar-month-days{
     display: grid;
@@ -49,8 +41,8 @@
 .calendar-month-days div{
     display: grid;
     place-items: center;
-    margin: 0 20px;
-    padding: 10px;
+    margin: 0 5px;
+    padding: 5px;
     font-weight: 600;
 }
 .calendar-month-days div:hover{

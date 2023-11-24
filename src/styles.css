@@ -518,7 +518,6 @@ textarea {
   margin-left: 30vw;
 }
 
-
 .modal-contents {
   width: 100%;
   max-height: calc(100vh - 100px);
@@ -526,6 +525,10 @@ textarea {
   overflow: auto;
   border-radius: 15px;
   border: none;
+}
+
+.disabled button{
+  pointer-events: none;
 }
 
 
@@ -595,6 +598,7 @@ textarea {
 .disabled{
   pointer-events: none;
 }
+
 /* project card part */
 .project-card{
   width: 350px;
@@ -602,6 +606,7 @@ textarea {
   margin: 10px;
   overflow-y:auto;
 }
+
 .project-card .w3-btn{
   opacity: 50%;
 }
@@ -615,11 +620,14 @@ textarea {
   background-color: white;
 }
 /* dark mode style */
+.dark, .dark .title{
+  color: white;
+}
 .dark label{
   color: var(--bs-orange);
 }
 
-.dark input{
+.dark input, .dark textarea{
   background-color: rgb(4, 0, 44);
   border-color: var(--bs-orange);
 }
@@ -634,12 +642,15 @@ textarea {
 }
 
 .dark .modal-box,.dark .box, .dark .card{
-  background-color:#001350;
+  background-color:#130f49;
+  padding: 10px;
+  box-shadow: inset -6px -6px 8px rgba(0, 0, 0, 0.2), inset 6px 6px 8px rgba(11, 66, 150, 0.2),  0px 0px 3px rgba(0, 0, 0, 0.5);
 }
 
 .dark .task-card{
   color:white;
-  background-color: #192c4b;
+  background-color:#130f49;
+  box-shadow: inset -4px -4px 6px rgba(0, 0, 0, 0.2), inset 4px 4px 6px rgba(11, 66, 150, 0.2);
 }
 
 /* responsivity */

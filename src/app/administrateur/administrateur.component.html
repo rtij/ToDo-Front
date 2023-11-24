@@ -1,5 +1,5 @@
 <div class="bg" [class.dark]="dark" [class.light]="!dark">
-    <div class="sidenav sidebar fermer" >
+    <div class="sidenav sidebar fermer">
         <div class="w3-text-orange title w3-container w3-padding nav">
             <a routerLink="/Admin" class="brand">ToD00!!</a>
             <button accesskey="b" id="Close" onclick="move()" class="w3-btn"><span
@@ -10,6 +10,9 @@
                         class="fa fa-chart-pie w3-text-green"></span> <span class="text"> Dashboard</span></a></li>
             <li><a class="w3-btn w3-left-align" routerLink="Project" routerLinkActive="active"><span
                         class="fa fa-briefcase w3-text-brown"></span> <span class="text"> Project</span></a></li>
+            <li><a class="w3-btn w3-left-align" (click)="paramsbox = true"><span class="fa fa-cog w3-text-white"></span>
+                    <span class="text"> Parameters</span></a></li>
+
             <li><a (click)="Logout()" class="w3-btn w3-left-align"><span class="fa fa-power-off w3-text-red"> </span>
                     <span class="text"> Logout</span></a></li>
         </ul>
@@ -17,7 +20,27 @@
     <div id="contenu" class="content">
         <ngx-loading-bar [includeSpinner]="false"></ngx-loading-bar>
         <div class="w3-padding">
-            <router-outlet ></router-outlet>
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+
+    <!-- Parametes box -->
+    <div class="w3-animate-top modal-box modal-sm" *ngIf="paramsbox == true">
+        <div class="modal-contents w3-container w3-padding">
+            <div class="navbar">
+                <div class="w3-left">
+                    <h4 class="title"><span class="fa fa-cog"></span> Parameters </h4>
+                </div>
+                <div class="w3-right">
+                    <button type="button" (click)="paramsbox =  false; 
+                " [class.disabled]="onsend" class="w3-btn w3-text-white bg-gradient-danger w3-round-large"><span
+                            class="fa fa-remove"></span></button>
+                </div>
+            </div>
+            <div class="form-group check">
+                <label for="">Dark mode</label>
+                <input (click)="SaveUserThemes();" [(ngModel)]="dark" [checked]="dark" type="checkbox" class="w3-check w3-margin-left" id="Dark" name="Dark">
+            </div>
         </div>
     </div>
 </div>
