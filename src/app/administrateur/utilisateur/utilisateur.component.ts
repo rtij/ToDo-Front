@@ -48,8 +48,6 @@ export class UtilisateurComponent {
     this.loader.start();
     this.service.UpdateUser(this.User).subscribe(
       (res) => {
-        this.User = res;
-        this.username = this.User.username;
         this.RefreshToken();
       },
       (err) => {
