@@ -1,6 +1,6 @@
 import { Time } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Data } from '@angular/router';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { ToastrService } from 'ngx-toastr';
 import { ServerData } from 'src/app/Object/Data/DataManager';
@@ -19,13 +19,16 @@ import { ServiceService } from 'src/app/Services/service.service';
 export class DashboardComponent<T> implements OnInit, DataComponentsManager<T>{
 
 
-  constructor(private toastr: ToastrService, private l: LoadingBarService, private loginService: LoginService, private service: ServiceService, private route: ActivatedRoute) {
+  constructor(private toastr: ToastrService,private crudService:CrudService<T>, private l: LoadingBarService, private loginService: LoginService, private service: ServiceService, private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
     this.getUser();
+    // this.getData();
+    alert("component initialized");
   }
 
+  type!:new ()=> T;
   loader = this.l.useRef();
   // state
   active: boolean = true;
@@ -41,6 +44,7 @@ export class DashboardComponent<T> implements OnInit, DataComponentsManager<T>{
   password: string = "";
   confp: string = "";
 
+  index:number = 0;
 
   Edit() {
     this.modal = true;
@@ -50,12 +54,25 @@ export class DashboardComponent<T> implements OnInit, DataComponentsManager<T>{
   // getData function
   getData(){
     const data:any = this.route.snapshot.data;
-    let entity = data.entity;
-    let index = 0;
-    // let d = this.crudService.Data.find((item)=>{return item.name == entity[index].type});
-    // if(d){
-
-    // }
+    let entity:[] = data.entity;
+    // getData all with crudService
+    this.type = entity[this.index];
+    this.loader.start();
+     this.crudService.read(this.type).subscribe(
+      (res)=>{
+        this.loader.complete();
+        this.index = this.index + 1;
+        console.log(this.type.name);
+        console.log(res);
+      },  
+      (err)=>{
+        this.loader.complete();
+        if(this.active){
+          this.getProjectsList();
+          this.Error(err);
+        }
+      }
+     );
   }
 
   getUser() {
