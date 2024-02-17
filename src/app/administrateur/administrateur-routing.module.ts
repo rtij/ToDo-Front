@@ -5,12 +5,14 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProjectComponent } from './project/project.component';
 import { TaskComponent } from './task/task.component';
 import { User } from '../Object/Users';
+import { Project } from '../Object/Project';
+import { Task } from '../Object/task';
 
 const routes: Routes = [
   {
     path: '', component: AdministrateurComponent, children: [
       { path: '', redirectTo: 'Project', pathMatch: 'full' },
-      { path: 'Dashboard', component: DashboardComponent, data: { entity: [{ type: User, instances: User }] } },
+      { path: 'Dashboard', component: DashboardComponent, data: { entity: [{ type: Task, instances: Task }, {type: Project, instances: Project}] } },
       { path: 'Project', component: ProjectComponent },
       { path: 'Task', component: TaskComponent }
     ]

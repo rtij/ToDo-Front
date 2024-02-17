@@ -20,6 +20,7 @@ import { LoadingComponent } from './loading/loading.component';
 import { NgxPrintModule } from 'ngx-print';
 import { CalendarComponent } from './component/calendar/calendar.component';
 import { ModalComponent } from './component/modal/modal.component';
+import { TextComponent } from './text/text.component';
 registerLocaleData(localeFr);
 
 @NgModule({
@@ -27,6 +28,7 @@ registerLocaleData(localeFr);
     AppComponent,
     LoginComponent,
     LoadingComponent,
+    TextComponent,
   ],
   imports: [
     BrowserModule,

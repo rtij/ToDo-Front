@@ -10,7 +10,7 @@
                         class="fa fa-chart-pie w3-text-green"></span> <span class="text"> Dashboard</span></a></li>
             <li><a class="w3-btn w3-left-align" routerLink="Project" routerLinkActive="active"><span
                         class="fa fa-briefcase w3-text-brown"></span> <span class="text"> Project</span></a></li>
-            <li><a class="w3-btn w3-left-align" (click)="paramsbox = true"><span class="fa fa-cog w3-text-white"></span>
+            <li><a class="w3-btn w3-left-align" (click)="paramsbox = true"><span class="fa fa-cog" [class.w3-text-white]="dark" [class.w3-text-grey]="!dark"></span>
                     <span class="text"> Parameters</span></a></li>
 
             <li><a (click)="Logout()" class="w3-btn w3-left-align"><span class="fa fa-power-off w3-text-red"> </span>

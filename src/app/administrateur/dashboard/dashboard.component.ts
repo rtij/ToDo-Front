@@ -24,8 +24,7 @@ export class DashboardComponent<T> implements OnInit, DataComponentsManager<T>{
 
   ngOnInit(): void {
     this.getUser();
-    // this.getData();
-    alert("component initialized");
+    // alert("component initialized");
   }
 
   type!:new ()=> T;
@@ -54,16 +53,15 @@ export class DashboardComponent<T> implements OnInit, DataComponentsManager<T>{
   // getData function
   getData(){
     const data:any = this.route.snapshot.data;
-    let entity:[] = data.entity;
+    let entity:any[] = data.entity;
     // getData all with crudService
-    this.type = entity[this.index];
+    this.type = entity[this.index].type;
     this.loader.start();
+    console.log(this.type.name);
      this.crudService.read(this.type).subscribe(
       (res)=>{
         this.loader.complete();
         this.index = this.index + 1;
-        console.log(this.type.name);
-        console.log(res);
       },  
       (err)=>{
         this.loader.complete();
@@ -82,6 +80,7 @@ export class DashboardComponent<T> implements OnInit, DataComponentsManager<T>{
       this.User = u;
       this.username = u.username;
       this.loader.complete();
+      this.getData();
       this.getdata = false;
     } else {
       this.loginService.getuser().subscribe(
@@ -89,6 +88,7 @@ export class DashboardComponent<T> implements OnInit, DataComponentsManager<T>{
           this.User = res;
           this.username = this.User.username;
           this.loader.complete();
+          this.getData();
           this.getdata = false;
         },
         (err) => {

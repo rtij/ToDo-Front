@@ -9,7 +9,7 @@
 }
 .background{
     position: absolute;
-    min-width:2000px;
+    min-width:100vw;
     top: 0;
     left: 50;
     z-index: -1;

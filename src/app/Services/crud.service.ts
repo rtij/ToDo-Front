@@ -3,14 +3,14 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { url } from '../Object/url';
 import { DateToShortDate } from '../Object/function';
-import { ServiceData, ServiceDataManager } from '../Object/Data/DataManager';
+import { DataSetter, ServiceData, ServiceDataManager } from '../Object/Data/DataManager';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CrudService<T> {
 
-  constructor(private http:HttpClient, private serviceDataManager:ServiceDataManager<T>) { }
+  constructor(private http:HttpClient) { }
 
   Data:ServiceData = [];
   
@@ -36,14 +36,15 @@ export class CrudService<T> {
   }
 
   read(type:new ()=> T): Observable<T[]> {
-    return this.http.get<T[]>(url+`api/${type.name}/liste`).pipe(
+    return this.http.get<T[]>(url+`api/${type.name.toLocaleLowerCase()}/list`).pipe(
       map((res:any)=>{
         let r:T[] = res['data'];
         let dateAttribute:string[] = this.formateTypeDates(type);
         if(dateAttribute.length != 0){
           r = this.DataFormateDate(r, dateAttribute);
         }
-        this.Data = this.serviceDataManager.DataSetter(type, this.Data, res['data']);
+        this.Data = DataSetter(type, this.Data, res['data']);
+        console.log(this.Data);
         return r;
       }),
       catchError(this.handleError)
@@ -51,7 +52,7 @@ export class CrudService<T> {
   }
 
   update(type:new ()=> T, instance:T, index:number) : Observable<T[]>{
-    return this.http.put<T[]>(url + `api/${type.name}/update/${'id'+type.name.toLowerCase()}`, {data:instance}).pipe(
+    return this.http.put<T[]>(url + `api/${type.name.toLocaleLowerCase()}/update/${'id'+type.name.toLowerCase()}`, {data:instance}).pipe(
       map((res:any)=>{
         let r:T[] = res['data'];
         let dateAttribute:string[] = this.formateTypeDates(type);
